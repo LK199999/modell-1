@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seite 1</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+  }
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+  }
+  h1 {
+    color: #333;
+  }
+  form {
+    margin-top: 20px;
+  }
+  input {
+    padding: 10px;
+    font-size: 16px;
+    margin-bottom: 10px;
+    width: 50px;
+  }
+  select {
+    padding: 10px;
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+  button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  button:hover {
+    background-color: #0056b3;
+  }
+  #resultContainer {
+    display: block; /* Stelle sicher, dass das Ergebnisfeld immer sichtbar ist */
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Seite 1</h1>
+  <p>Dies ist Seite 1.</p>
+  <form id="myForm">
+    <input type="number" id="number1" name="number1" placeholder="Zahl 1" required>
+    <select id="operator" name="operator">
+      <option value="+">+</option>
+      <option value="-">-</option>
+      <option value="*">*</option>
+      <option value="/">/</option>
+    </select>
+    <input type="number" id="number2" name="number2" placeholder="Zahl 2" required>
+    <button type="submit">Berechnen</button>
+  </form>
+  
+  <!-- Ergebnisfeld -->
+  <div id="resultContainer">
+    <h2>Ergebnis:</h2>
+    <p id="result"></p>
+  </div>
+</div>
+
+<script>
+  document.getElementById('myForm').addEventListener('submit', async function(event) {
+    event.preventDefault();
+    
+    const formData = new FormData(this);
+    const url = 'https://hooks.zapier.com/hooks/catch/18435037/3ptre1b/';
+    
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        body: formData
+      });
+      
+      if (response.ok) {
+        const resultData = await response.json();
+        const resultElement = document.getElementById('result');
+        resultElement.textContent = resultData.result; // Korrigiere den Namen der Variable von result zu resultData
+        document.getElementById('resultContainer').style.display = 'block';
+        alert('Daten erfolgreich übermittelt!');
+        // Hier können Sie weitere Aktionen nach dem Absenden des Formulars ausführen
+      } else {
+        throw new Error('Fehler beim Senden der Daten');
+      }
+    } catch (error) {
+      console.error('Fehler:', error);
+      alert('Ein Fehler ist aufgetreten beim Senden der Daten');
+    }
+  });
+</script>
+
+</body>
+</html>
